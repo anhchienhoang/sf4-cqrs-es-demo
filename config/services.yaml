@@ -48,6 +48,8 @@ services:
 
     JMS\Serializer\SerializerInterface: '@JMS\Serializer\Serializer'
 
+    SfCQRSDemo\Shared\EventStore: '@SfCQRSDemo\Infrastructure\Persistence\MySQLEventStore'
+
     SfCQRSDemo\Model\Product\ProductRepository: '@SfCQRSDemo\Infrastructure\Persistence\ProductRepository'
 
     SfCQRSDemo\Model\Product\ProductProjection: '@SfCQRSDemo\Infrastructure\Projection\ProductProjection'

@@ -6,6 +6,7 @@ use SfCQRSDemo\Model\Product\Product;
 use SfCQRSDemo\Model\Product\ProductProjection;
 use SfCQRSDemo\Model\Product\ProductRepository as ProductRepositoryPort;
 use SfCQRSDemo\Shared\AggregateId;
+use SfCQRSDemo\Shared\EventStore;
 use SfCQRSDemo\Shared\RecordsEvents;
 
 class ProductRepository implements ProductRepositoryPort

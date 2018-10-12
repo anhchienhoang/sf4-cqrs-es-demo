@@ -9,6 +9,7 @@ use SfCQRSDemo\Shared\AggregateId;
 use SfCQRSDemo\Shared\DomainEvent;
 use SfCQRSDemo\Shared\DomainEvents;
 use SfCQRSDemo\Shared\DomainEventsHistory;
+use SfCQRSDemo\Shared\EventStore;
 
 class MySQLEventStore implements EventStore
 {
