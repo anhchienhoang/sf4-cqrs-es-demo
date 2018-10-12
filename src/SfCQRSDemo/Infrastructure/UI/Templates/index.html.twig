@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'product_list'|trans }}</h1>
+    {% for row in products|batch(3) %}
+        <div class="row" style="margin-bottom: 20px">
+            {% for i in row %}
+                <div class="col-md-4 text-center">
+                    <a href="{{ path('product_detail', {id: i.id}) }}">
+                        <div class="product-item">
+                            <div><img class="col-md-8" src="{{ asset('images/product.png') }}"></div>
+                            <h2>{{ i.name }}</h2>
+                            <p>{{ i.price }}&euro;</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    {% if maxPages > 1 %}
+        <nav>
+            <ul class="pagination">
+                <li class="page-item{{ thisPage == 1 ? ' disabled' }}">
+                    <a class="page-link" href="{{ path('index', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                </li>
+
+                {% for i in 1..maxPages %}
+                    <li class="page-item{{ thisPage == i ? ' active' }}">
+                        <a class="page-link" href="{{ path('index', {page: i}) }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+
+                <li class="page-item{{ thisPage == maxPages ? ' disabled' }}">
+                    <a class="page-link"
+                       href="{{ path('index', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}

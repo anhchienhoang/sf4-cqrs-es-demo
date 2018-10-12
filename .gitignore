@@ -1,0 +1,34 @@
+/.project
+/.idea
+/.vagrant
+/.cache
+/.config
+/.local
+*~
+/vendor
+/composer.phar
+/node_modules
+._.DS_Store
+/.docker
+/yarn-error.log
+/build
+/yarn
+/gulp
+.DS_Store
+src/SfCQRSDemo/Infrastructure/UI/Public/build
+src/SfCQRSDemo/Infrastructure/UI/Public/fonts
+var/cache/*
+var/log/*
+.docker
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> symfony/webpack-encore-pack ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-pack ###

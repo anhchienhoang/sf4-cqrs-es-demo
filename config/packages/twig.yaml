@@ -1,0 +1,5 @@
+twig:
+    default_path: '%kernel.project_dir%/src/SfCQRSDemo/Infrastructure/UI/Templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes: ['bootstrap_4_layout.html.twig']

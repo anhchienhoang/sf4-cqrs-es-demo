@@ -1,0 +1,37 @@
+$line-color: #ddd;
+
+body {
+  background-color: #fff;
+}
+
+header {
+  .navbar {
+    padding: 0;
+    height: 70px;
+    line-height: 70px;
+    border-bottom: 1px solid $line-color;
+  }
+}
+
+a {
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.main-wrapper {
+  margin-top: 90px;
+}
+
+.product-item {
+  border: 1px solid $line-color;
+  padding: 10px;
+}
+
+.product-detail {
+  .img-thumbnail {
+    max-width: 300px;
+    margin-right: 10px;
+  }
+}
+

@@ -1,0 +1,6 @@
+SfCQRSDemo\Model\Product\ProductId:
+    exclusion_policy: ALL
+    properties:
+        productId:
+            type: string
+            serialized_name: product_id

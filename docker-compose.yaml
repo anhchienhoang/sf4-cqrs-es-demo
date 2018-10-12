@@ -1,0 +1,36 @@
+version: '2.0'
+
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www:cached
+    ports:
+      - "80:80"
+    links:
+      - db
+    working_dir: /var/www
+    stdin_open: true
+    tty: true
+    environment:
+      - APP_ENV=dev
+      - APP_SECRET=39465ba56d4a766c6c7a8147f0a97e73
+      - DATABASE_URL=mysql://root:root@db:3306/web
+  db:
+    container_name: db
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./.docker/.dump:/docker-entrypoint-initdb.d
+      - ./.docker/pfm/mysql/conf.d:/etc/mysql/conf.d
+      - ./.docker/data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=web
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    stdin_open: true
+    tty: true

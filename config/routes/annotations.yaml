@@ -1,0 +1,3 @@
+controllers:
+    resource: ../../src/SfCQRSDemo/Infrastructure/Controller/
+    type: annotation

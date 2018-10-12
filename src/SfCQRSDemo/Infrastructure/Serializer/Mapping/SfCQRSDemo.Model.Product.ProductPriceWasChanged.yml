@@ -1,0 +1,10 @@
+SfCQRSDemo\Model\Product\ProductPriceWasChanged:
+    exclusion_policy: ALL
+
+    properties:
+        productId:
+            type: SfCQRSDemo\Model\Product\ProductId
+            serialized_name: product_id
+
+        price:
+            type: float

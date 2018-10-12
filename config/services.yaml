@@ -1,0 +1,51 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    SfCQRSDemo\Infrastructure\Controller\:
+        resource: '../src/SfCQRSDemo/Infrastructure/Controller'
+        tags: ['controller.service_arguments']
+
+    SfCQRSDemo\Application\Command\Handler\:
+        resource: '../src/SfCQRSDemo/Application/Command/Handler'
+        tags: ['messenger.message_handler']
+
+    SfCQRSDemo\Application\Query\Handler\:
+        resource: '../src/SfCQRSDemo/Application/Query/Handler'
+        tags: ['messenger.message_handler']
+
+    SfCQRSDemo\Infrastructure\:
+        resource: '../src/SfCQRSDemo/Infrastructure/*'
+        exclude: '../src/SfCQRSDemo/Infrastructure/{Migrations,UI}'
+
+    SfCQRSDemo\Infrastructure\Serializer\SerializerFactory:
+        arguments:
+          - '%kernel.project_dir%/var/cache/serializer'
+          - '%kernel.debug%'
+          - '%kernel.project_dir%/src/SfCQRSDemo/Infrastructure/Serializer/Mapping'
+
+    JMS\Serializer\Serializer:
+        factory: 'SfCQRSDemo\Infrastructure\Serializer\SerializerFactory:create'
+
+    JMS\Serializer\SerializerInterface: '@JMS\Serializer\Serializer'
+
+    SfCQRSDemo\Model\Product\ProductRepository: '@SfCQRSDemo\Infrastructure\Persistence\ProductRepository'
+
+    SfCQRSDemo\Model\Product\ProductProjection: '@SfCQRSDemo\Infrastructure\Projection\ProductProjection'
+
+    SfCQRSDemo\Model\Product\ProductQueryRepository: '@SfCQRSDemo\Infrastructure\Persistence\ProductQueryRepository'

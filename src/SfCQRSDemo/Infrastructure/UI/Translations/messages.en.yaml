@@ -1,0 +1,8 @@
+add_new_product: Add new product
+name: Product Name
+price: Price
+description: Product Description
+edit: Edit
+update_product: Update Product
+save_changes: Save Changes
+product_list: Product List
