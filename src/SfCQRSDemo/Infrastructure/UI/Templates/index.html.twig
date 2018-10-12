@@ -4,13 +4,13 @@
     <h1>{{ 'product_list'|trans }}</h1>
     {% for row in products|batch(3) %}
         <div class="row" style="margin-bottom: 20px">
-            {% for i in row %}
+            {% for item in row %}
                 <div class="col-md-4 text-center">
-                    <a href="{{ path('product_detail', {id: i.id}) }}">
+                    <a href="{{ path('product_detail', {id: item.id}) }}">
                         <div class="product-item">
-                            <div><img class="col-md-8" src="{{ asset('images/product.png') }}"></div>
-                            <h2>{{ i.name }}</h2>
-                            <p>{{ i.price }}&euro;</p>
+                            <div><img class="col-md-8" src="{{ item.defaultImage }}"></div>
+                            <h2>{{ item.name }}</h2>
+                            <p>{{ item.price }}&euro;</p>
                         </div>
                     </a>
                 </div>

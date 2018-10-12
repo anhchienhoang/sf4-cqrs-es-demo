@@ -1,0 +1,11 @@
+{% for row in images|batch(3) %}
+    <div class="row">
+        {% for item in row %}
+            {% if item.image != defaultImage %}
+                <div class="col-md-4 text-center">
+                    <img src="{{ item.image }}" class="rounded float-left img-thumbnail" alt="">
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}

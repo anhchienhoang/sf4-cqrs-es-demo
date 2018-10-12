@@ -1,0 +1,6 @@
+SfCQRSDemo\Model\Product\ImageId:
+    exclusion_policy: ALL
+    properties:
+        imageId:
+            type: string
+            serialized_name: image_id

@@ -4,6 +4,8 @@ namespace SfCQRSDemo\Model\Product;
 
 class ProductView
 {
+    const DEFAULT_IMAGE = 'no_image.jpg';
+
     /**
      * @var string
      */
@@ -25,17 +27,31 @@ class ProductView
     private $description;
 
     /**
+     * @var array
+     */
+    private $images;
+
+    /**
+     * @var string
+     */
+    private $defaultImage;
+
+    /**
      * @param string $id
      * @param string $name
      * @param float  $price
      * @param string $description
+     * @param array  $images
+     * @param string $defaultImage
      */
-    public function __construct(string $id, string $name, float $price, string $description)
+    public function __construct(string $id, string $name, float $price, string $description, array $images, string $defaultImage)
     {
         $this->id = $id;
         $this->name = $name;
         $this->price = $price;
         $this->description = $description;
+        $this->images = $images;
+        $this->defaultImage = $defaultImage;
     }
 
     /**
@@ -68,5 +84,21 @@ class ProductView
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    /**
+     * @return array
+     */
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultImage(): string
+    {
+        return $this->defaultImage;
     }
 }

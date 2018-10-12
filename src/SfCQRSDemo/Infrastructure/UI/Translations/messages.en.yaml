@@ -6,3 +6,10 @@ edit: Edit
 update_product: Update Product
 save_changes: Save Changes
 product_list: Product List
+select_image: Please select a product image to upload
+could_not_upload: Could not upload file.
+uploaded_file_not_allowed: The uploaded file is not allowed, please upload only PNG/JPEG files
+upload_image_for_product: 'Upload images for product %product%'
+upload: Upload
+uploaded_images: Uploaded Images
+product_images: Product images

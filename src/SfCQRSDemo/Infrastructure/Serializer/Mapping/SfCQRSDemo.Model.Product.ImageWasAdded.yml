@@ -1,0 +1,14 @@
+SfCQRSDemo\Model\Product\ImageWasAdded:
+    exclusion_policy: ALL
+
+    properties:
+        imageId:
+            type: SfCQRSDemo\Model\Product\ImageId
+            serialized_name: image_id
+
+        productId:
+            type: SfCQRSDemo\Model\Product\ProductId
+            serialized_name: product_id
+
+        image:
+            type: string

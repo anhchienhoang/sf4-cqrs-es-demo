@@ -5,6 +5,10 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    infra_dir: '%kernel.project_dir%/src/SfCQRSDemo/Infrastructure'
+    public_dir: '%infra_dir%/UI/Public'
+    images_dir: '/product_images'
+    no_image: '/images/no_image.png'
 
 services:
     # default configuration for services in *this* file
@@ -37,7 +41,7 @@ services:
         arguments:
           - '%kernel.project_dir%/var/cache/serializer'
           - '%kernel.debug%'
-          - '%kernel.project_dir%/src/SfCQRSDemo/Infrastructure/Serializer/Mapping'
+          - '%infra_dir%/Serializer/Mapping'
 
     JMS\Serializer\Serializer:
         factory: 'SfCQRSDemo\Infrastructure\Serializer\SerializerFactory:create'
@@ -49,3 +53,6 @@ services:
     SfCQRSDemo\Model\Product\ProductProjection: '@SfCQRSDemo\Infrastructure\Projection\ProductProjection'
 
     SfCQRSDemo\Model\Product\ProductQueryRepository: '@SfCQRSDemo\Infrastructure\Persistence\ProductQueryRepository'
+
+    SfCQRSDemo\Infrastructure\Persistence\ProductViewMapper:
+        arguments: ['%images_dir%', '%no_image%']

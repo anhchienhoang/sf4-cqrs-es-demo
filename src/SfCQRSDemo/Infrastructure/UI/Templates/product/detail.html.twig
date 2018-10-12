@@ -1,13 +1,32 @@
+{# @var \SfCQRSDemo\Model\Product\ProductView product #}
 {% extends 'base.html.twig' %}
 
 {% block title product.name %}
 
 {% block body %}
-    <div class="product-detail">
-        <img src="{{ asset('images/product.png') }}" class="rounded float-left img-thumbnail" alt="{{ product.name }}">
-        <h1>{{ product.name }}</h1>
-        <h2>{{ product.price }}&euro;</h2>
-        <p>{{ product.description }}</p>
-        <div><a href="{{ path('product_update', {id: product.id}) }}" class="btn btn-primary"><i class="fa fa-edit"></i> {{ 'edit'|trans }}</a></div>
+    <div class="product-detail row mb-3">
+        <div class="col-md-4">
+            <img src="{{ product.defaultImage }}" class="rounded float-left img-thumbnail" alt="{{ product.name }}">
+        </div>
+        <div class="col-md-8">
+            <h1>{{ product.name }}</h1>
+            <h2>{{ product.price }}&euro;</h2>
+            <p>{{ product.description }}</p>
+            <div>
+                <a href="{{ path('product_update', {id: product.id}) }}" class="btn btn-primary">
+                    <i class="fa fa-edit"></i> {{ 'edit'|trans }}
+                </a>
+
+                <a href="{{ path('product_add_image', {id: product.id}) }}" class="btn btn-secondary">
+                    <i class="fa fa-edit"></i> {{ 'uploaded_images'|trans }}
+                </a>
+            </div>
+        </div>
     </div>
+
+    {% if product.images|length %}
+        <h2>{{ 'product_images'|trans }}</h2>
+
+        {% include 'product/images_list.html.twig' with {images: product.images, defaultImage: product.defaultImage} %}
+    {% endif %}
 {% endblock %}

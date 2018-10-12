@@ -11,9 +11,12 @@ class ProductQueryRepository implements ProductQueryPort
 {
     protected $connection;
 
-    public function __construct(Connection $connection)
+    protected $productViewMapper;
+
+    public function __construct(Connection $connection, ProductViewMapper $productViewMapper)
     {
         $this->connection = $connection;
+        $this->productViewMapper = $productViewMapper;
     }
 
     public function get(string $id): ProductView
@@ -23,12 +26,7 @@ class ProductQueryRepository implements ProductQueryPort
 
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        return new ProductView(
-            $data['id'],
-            $data['name'],
-            $data['price'],
-            $data['description']
-        );
+        return $this->productViewMapper->map($data);
     }
 
     public function fetchAll(int $page, int $perPage): array
@@ -43,12 +41,7 @@ class ProductQueryRepository implements ProductQueryPort
         $products = [];
 
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $products[] = new ProductView(
-                $row['id'],
-                $row['name'],
-                (float) $row['price'],
-                $row['description']
-            );
+            $products[] = $this->productViewMapper->map($row);
         }
 
         $stmt->closeCursor();

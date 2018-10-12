@@ -13,4 +13,6 @@ interface ProductProjection extends Projection
     public function projectWhenProductPriceWasChanged(ProductPriceWasChanged $event);
 
     public function projectWhenProductDescriptionWasChanged(ProductDescriptionWasChanged $event);
+
+    public function projectWhenImageWasAdded(ImageWasAdded $event);
 }

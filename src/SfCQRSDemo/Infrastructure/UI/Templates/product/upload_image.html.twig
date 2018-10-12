@@ -1,0 +1,22 @@
+{# @var \SfCQRSDemo\Model\Product\ProductView product #}
+
+{% extends 'base.html.twig' %}
+
+{% set pageTitle = 'upload_image_for_product'|trans({'%product%': product.name}) %}
+
+{% block title pageTitle %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <h1>{{ pageTitle }}</h1>
+    <div>
+        {{ form(form) }}
+    </div>
+
+    {% if product.images|length %}
+        <h2>{{ 'uploaded_images'|trans }}</h2>
+
+        {% include 'product/images_list.html.twig' with {images: product.images, defaultImage: null} %}
+    {% endif %}
+{% endblock %}

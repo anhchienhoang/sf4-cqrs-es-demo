@@ -11,7 +11,7 @@ class AddProductHandler extends AbstractCommandHandler
     public function __invoke(AddProductCommand $command)
     {
         $newProduct = Product::create(
-            ProductId::generate(),
+            $command->getProductId(),
             $command->getName(),
             $command->getPrice(),
             $command->getDescription()

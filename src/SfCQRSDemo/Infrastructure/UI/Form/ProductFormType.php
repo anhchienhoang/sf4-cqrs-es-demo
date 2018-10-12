@@ -50,7 +50,7 @@ class ProductFormType extends AbstractType
                 SubmitType::class,
                 [
                     'label' => $options['submitLabel'],
-                    'attr' => ['class' => 'btn-submit']
+                    'attr' => ['class' => 'btn-primary']
                 ]
             );
     }

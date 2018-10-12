@@ -2,15 +2,23 @@
 
 namespace SfCQRSDemo\Infrastructure\Controller;
 
+use Psr\Log\LoggerInterface;
+use SfCQRSDemo\Application\Command\AddImageCommand;
 use SfCQRSDemo\Application\Command\AddProductCommand;
 use SfCQRSDemo\Application\Command\UpdateProductCommand;
 use SfCQRSDemo\Application\Query\ProductQuery;
+use SfCQRSDemo\Infrastructure\UI\Form\ImageUploadType;
 use SfCQRSDemo\Infrastructure\UI\Form\ProductFormType;
+use SfCQRSDemo\Model\Product\ProductId;
 use SfCQRSDemo\Model\Product\ProductView;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\MakerBundle\Str;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/product")
@@ -98,7 +106,10 @@ class ProductController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            $productId = ProductId::generate();
+
             $productCommand = new AddProductCommand(
+                $productId,
                 $data[ProductFormType::NAME],
                 $data[ProductFormType::PRICE],
                 $data[ProductFormType::DESCRIPTION]
@@ -106,12 +117,67 @@ class ProductController extends Controller
 
             $bus->dispatch($productCommand);
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('product_add_image', ['id' => (string) $productId]);
         }
 
         return $this->render(
             'product/add.html.twig',
             ['form' => $form->createView()]
+        );
+    }
+
+    /**
+     * @Route("/add/image/{id}", name="product_add_image", requirements={"id" = ".+"})
+     */
+    public function addImage(string $id, Request $request, MessageBusInterface $bus, TranslatorInterface $translator, LoggerInterface $logger)
+    {
+        $productQuery = new ProductQuery($id);
+
+        /** @var ProductView $product */
+        $product = $bus->dispatch($productQuery);
+
+        $form = $this->createForm(ImageUploadType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            /** @var UploadedFile $file */
+            $file = $data['file'];
+
+            $allowedTypes = ['image/jpeg', 'image/png'];
+            if (!in_array($file->getMimeType(), $allowedTypes)) {
+                $this->addFlash('danger', $translator->trans('uploaded_file_not_allowed'));
+
+                return $this->redirectToRoute('product_add_image', ['id' => $product->getId()]);
+            }
+
+            $fileName = Str::asSnakeCase($product->getName()).'_'.md5(uniqid()).'.'.$file->guessExtension();
+
+            try {
+                $file->move($this->getParameter('public_dir').$this->getParameter('images_dir'), $fileName);
+            } catch (FileException $e) {
+                $logger->error($e->getMessage(), $e->getTrace());
+
+                $this->addFlash('danger', $translator->trans('could_not_upload'));
+
+                return $this->redirectToRoute('product_add_image', ['id' => $product->getId()]);
+            }
+
+            $addImageCommand = new AddImageCommand($fileName, $product->getId());
+
+            $bus->dispatch($addImageCommand);
+
+            return $this->redirectToRoute('product_add_image', ['id' => $product->getId()]);
+        }
+
+        return $this->render(
+            'product/upload_image.html.twig',
+            [
+                'form' => $form->createView(),
+                'product' => $product,
+            ]
         );
     }
 }

@@ -9,7 +9,7 @@ use SfCQRSDemo\Shared\DomainEventsHistory;
 class Product extends AggregateRoot
 {
     /**
-     * @var string
+     * @var ProductId
      */
     private $id;
 
@@ -29,17 +29,24 @@ class Product extends AggregateRoot
     private $description;
 
     /**
-     * @param string $id
-     * @param string $name
-     * @param float  $price
-     * @param string $description
+     * @var Image[]
      */
-    private function __construct($id, $name, $price, $description)
+    private $images;
+
+    /**
+     * @param string  $id
+     * @param string  $name
+     * @param float   $price
+     * @param string  $description
+     * @param Image[] $images
+     */
+    private function __construct($id, $name, $price, $description, $images = [])
     {
         $this->id = $id;
         $this->name = $name;
         $this->price = $price;
         $this->description = $description;
+        $this->images = $images;
     }
 
     private static function createEmptyProductWithId(AggregateId $productId)
@@ -100,6 +107,11 @@ class Product extends AggregateRoot
         );
     }
 
+    public function addImage(string $image)
+    {
+        $this->applyAndRecordThat(new ImageWasAdded($this->id, ImageId::generate(), $image));
+    }
+
     public static function reconstituteFromHistory(DomainEventsHistory $eventsHistory)
     {
         $product = static::createEmptyProductWithId($eventsHistory->getAggregateId());
@@ -131,5 +143,10 @@ class Product extends AggregateRoot
     protected function applyProductDescriptionWasChanged(ProductDescriptionWasChanged $event)
     {
         $this->description = $event->getDescription();
+    }
+
+    protected function applyImageWasAdded(ImageWasAdded $event)
+    {
+        $this->images[] = Image::create($event->getImageId(), $event->getImage());
     }
 }
