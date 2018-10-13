@@ -13,17 +13,9 @@ class UpdateProductHandler extends AbstractCommandHandler
         /** @var Product $product */
         $product = $this->productRepository->get(ProductId::fromString($command->getId()));
 
-        if ($product->getName() !== $command->getName()) {
-            $product->changeName($command->getName());
-        }
-
-        if ($product->getPrice() !== $command->getPrice()) {
-            $product->changePrice($command->getPrice());
-        }
-
-        if ($product->getDescription() !== $command->getDescription()) {
-            $product->changeDescription($command->getDescription());
-        }
+        $product->changeName($command->getName());
+        $product->changePrice($command->getPrice());
+        $product->changeDescription($command->getDescription());
 
         $this->productRepository->add($product);
     }

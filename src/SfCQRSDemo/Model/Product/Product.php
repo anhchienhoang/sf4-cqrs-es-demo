@@ -86,8 +86,20 @@ class Product extends AggregateRoot
         return $this->description;
     }
 
+    /**
+     * @return Image[]
+     */
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
     public function changeName(string $newName)
     {
+        if ($newName === $this->name) {
+            return;
+        }
+
         $this->applyAndRecordThat(
             new ProductNameWasChanged($this->id, $newName)
         );
@@ -95,6 +107,10 @@ class Product extends AggregateRoot
 
     public function changePrice(float $newPrice)
     {
+        if ($newPrice === $this->price) {
+            return;
+
+        }
         $this->applyAndRecordThat(
             new ProductPriceWasChanged($this->id, $newPrice)
         );
@@ -102,6 +118,10 @@ class Product extends AggregateRoot
 
     public function changeDescription(string $newDescription)
     {
+        if ($newDescription === $this->description) {
+            return;
+        }
+
         $this->applyAndRecordThat(
             new ProductDescriptionWasChanged($this->id, $newDescription)
         );

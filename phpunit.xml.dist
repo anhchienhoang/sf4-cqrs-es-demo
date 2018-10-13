@@ -30,6 +30,11 @@
     <filter>
         <whitelist>
             <directory>src</directory>
+            <exclude>
+                <directory>./src/SfCQRSDemo/Infrastructure/Migrations</directory>
+                <directory>./src/SfCQRSDemo/Infrastructure/Projection</directory>
+                <directory>./src/SfCQRSDemo/Infrastructure/UI</directory>
+            </exclude>
         </whitelist>
     </filter>
 

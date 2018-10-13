@@ -33,3 +33,7 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-pack ###
 src/SfCQRSDemo/Infrastructure/UI/Public/product_images
+
+###> phpunit/phpunit ###
+/phpunit.xml
+###< phpunit/phpunit ###
