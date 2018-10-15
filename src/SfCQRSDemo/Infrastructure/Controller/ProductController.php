@@ -5,6 +5,7 @@ namespace SfCQRSDemo\Infrastructure\Controller;
 use Psr\Log\LoggerInterface;
 use SfCQRSDemo\Application\Command\AddImageCommand;
 use SfCQRSDemo\Application\Command\AddProductCommand;
+use SfCQRSDemo\Application\Command\ResizeImageCommand;
 use SfCQRSDemo\Application\Command\UpdateProductCommand;
 use SfCQRSDemo\Application\Query\ProductQuery;
 use SfCQRSDemo\Infrastructure\UI\Form\ImageUploadType;
@@ -166,8 +167,10 @@ class ProductController extends Controller
             }
 
             $addImageCommand = new AddImageCommand($fileName, $product->getId());
+            $resizeCommand = new ResizeImageCommand($fileName);
 
             $bus->dispatch($addImageCommand);
+            $bus->dispatch($resizeCommand);
 
             return $this->redirectToRoute('product_add_image', ['id' => $product->getId()]);
         }

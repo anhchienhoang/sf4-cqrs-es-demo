@@ -9,6 +9,11 @@ class ProductViewMapper
     /**
      * @var string
      */
+    private $publicDir;
+
+    /**
+     * @var string
+     */
     private $imageDir;
 
     /**
@@ -16,8 +21,14 @@ class ProductViewMapper
      */
     private $noImage;
 
-    public function __construct(string $imageDir, string $noImage)
+    /**
+     * @param string $publicDir
+     * @param string $imageDir
+     * @param string $noImage
+     */
+    public function __construct(string $publicDir, string $imageDir, string $noImage)
     {
+        $this->publicDir = $publicDir;
         $this->imageDir = $imageDir;
         $this->noImage = $noImage;
     }
@@ -30,7 +41,15 @@ class ProductViewMapper
 
         if (count($images) > 0) {
             array_walk($images, function ($item) {
-                $item->image = $this->imageDir.'/'.$item->image;
+                $thumbnail = 'thumb_'.$item->image;
+
+                if (file_exists($this->publicDir.'/'.$this->imageDir.'/'.$thumbnail)) {
+                    $image = $thumbnail;
+                } else {
+                    $image = $item->image;
+                }
+
+                $item->image = $this->imageDir.'/'.$image;
             });
 
             $firstImage = $images[0];

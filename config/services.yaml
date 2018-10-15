@@ -9,6 +9,7 @@ parameters:
     public_dir: '%infra_dir%/UI/Public'
     images_dir: '/product_images'
     no_image: '/images/no_image.png'
+    image_crop_size: 300
 
 services:
     # default configuration for services in *this* file
@@ -57,4 +58,9 @@ services:
     SfCQRSDemo\Model\Product\ProductQueryRepository: '@SfCQRSDemo\Infrastructure\Persistence\ProductQueryRepository'
 
     SfCQRSDemo\Infrastructure\Persistence\ProductViewMapper:
-        arguments: ['%images_dir%', '%no_image%']
+        arguments: ['%public_dir%', '%images_dir%', '%no_image%']
+
+    SfCQRSDemo\Infrastructure\Service\ImageService:
+        arguments: ['%image_crop_size%', '%public_dir%/%images_dir%']
+
+    SfCQRSDemo\Application\Service\ImageService: '@SfCQRSDemo\Infrastructure\Service\ImageService'

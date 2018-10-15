@@ -33,7 +33,9 @@ ENV PHPIZE_DEPS \
   libxslt1-dev        \
   make                \
   pkg-config          \
-  re2c
+  re2c                \
+  librabbitmq-dev     \
+  libssl-dev
 
 # Set Debian sources
 RUN \
@@ -108,11 +110,16 @@ RUN \
         xmlrpc      \
         xsl         \
         zip         \
+        sockets     \
 
 # Install PHP redis extension
   && pecl install -o -f redis \
   && rm -rf /tmp/pear \
   && echo "extension=redis.so" > $PHP_INI_DIR/conf.d/docker-php-ext-redis.ini \
+
+# Install amqp extension
+  && pecl install amqp \
+  && docker-php-ext-enable amqp \
 
 # Install jinja2 cli
   && easy_install j2cli \
