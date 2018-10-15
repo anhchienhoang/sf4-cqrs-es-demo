@@ -56,9 +56,12 @@ Start containers:
 $ docker-compose up -d
 ```
 
-Build Front-end:
+For the first time, it will take a bit of time to get the page is ready (running composer, npm...) 
+and if you access to the homepage, it will display the waiting text.
+
+Build Front-end while developing:
 ```bash
-$ docker run -it --rm --volume $(pwd):/app -w=/app node:9.0 /bin/bash -c "npm install && npm run build"
+$ docker run -it --volume $(pwd):/app -w=/app node:9.0 /bin/bash -c "npm run watch"
 ```
 
 Next you have to update your hosts file (commonly located at /etc/hosts) with the following

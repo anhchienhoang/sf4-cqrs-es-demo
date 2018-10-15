@@ -40,7 +40,7 @@ RUN \
   apt-get update && apt-get install -q -y --no-install-recommends wget gnupg apt-transport-https && \
 ##  echo "deb http://deb.debian.org/debian/ stretch main non-free contrib\n" > /etc/apt/sources.list.d/debian.list && \
 ##  echo "deb-src http://deb.debian.org/debian/ stretch main non-free contrib\n" >> /etc/apt/sources.list.d/debian.list && \
-  echo "deb https://deb.nodesource.com/node_8.x stretch main" > /etc/apt/sources.list.d/node.list &&  \
+  echo "deb https://deb.nodesource.com/node_9.x stretch main" > /etc/apt/sources.list.d/node.list &&  \
       wget --quiet -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 
 #Fixing the postgresql-client installation issue
@@ -86,11 +86,6 @@ RUN \
     openssh-server      \
 
   && mkdir /var/run/sshd \
-  && useradd -m -s /bin/bash -d /data jenkins               \
-  && echo "jenkins:bigsecretpass" | chpasswd                \
-  #Add user to group www-data and to sudoers file
-  && usermod -a -G www-data jenkins                         \
-  && echo 'jenkins ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers  \
 
 # Install PHP extensions
   && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
@@ -150,6 +145,10 @@ WORKDIR /var/www
 
 # supervisord configuration
 COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
+
+RUN mkdir -p /etc/nginx/waiting
+COPY docker/nginx/waiting/waiting_vhost.conf /etc/nginx/waiting/waiting_vhost.conf
+COPY docker/nginx/waiting/nginx_waiting.conf /etc/nginx/nginx_waiting.conf
 
 # Run app with entrypoints
 ENTRYPOINT ["/tini", "--", "/entrypoint.sh"]
