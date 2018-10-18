@@ -132,6 +132,11 @@ class Product extends AggregateRoot
         $this->applyAndRecordThat(new ImageWasAdded($this->id, ImageId::generate(), $image));
     }
 
+    public function removeImage(Image $image)
+    {
+        $this->applyAndRecordThat(new ImageWasRemoved($image, $this->id));
+    }
+
     public static function reconstituteFromHistory(DomainEventsHistory $eventsHistory)
     {
         $product = static::createEmptyProductWithId($eventsHistory->getAggregateId());
@@ -167,6 +172,11 @@ class Product extends AggregateRoot
 
     protected function applyImageWasAdded(ImageWasAdded $event)
     {
-        $this->images[] = Image::create($event->getImageId(), $event->getImage());
+        $this->images[(string) $event->getImageId()] = Image::create($event->getImageId(), $event->getImage());
+    }
+
+    protected function applyImageWasRemoved(ImageWasRemoved $event)
+    {
+        unset($this->images[(string) $event->getImage()->getId()]);
     }
 }

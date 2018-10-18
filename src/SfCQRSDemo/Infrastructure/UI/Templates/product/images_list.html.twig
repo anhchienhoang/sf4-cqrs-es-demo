@@ -1,11 +1,17 @@
 {% for row in images|batch(3) %}
     <div class="row">
         {% for item in row %}
-            {% if item.image != defaultImage %}
-                <div class="col-md-4 text-center">
-                    <img src="{{ item.image }}" class="rounded float-left img-thumbnail" alt="">
+            <div class="col-md-4 text-center mb-3">
+                <div class="rounded img-thumbnail">
+                    <a href="{{ item.origin }}" target="_blank"><img src="{{ item.image }}" alt=""></a>
+
+                    {% if control is defined and control is same as(true) %}
+                        <br>
+                        <a href="{{ path('product_delete_image', {id: productId, imageId: item.id}) }}"
+                           class="btn btn-danger">{{ 'delete'|trans }}</a>
+                    {% endif %}
                 </div>
-            {% endif %}
+            </div>
         {% endfor %}
     </div>
 {% endfor %}

@@ -28,9 +28,9 @@ class ProductViewMapper
     private $filesystem;
 
     /**
-     * @param string $publicDir
-     * @param string $imageDir
-     * @param string $noImage
+     * @param string     $publicDir
+     * @param string     $imageDir
+     * @param string     $noImage
      * @param Filesystem $filesystem
      */
     public function __construct(string $publicDir, string $imageDir, string $noImage, Filesystem $filesystem)
@@ -57,6 +57,7 @@ class ProductViewMapper
                     $image = $item->image;
                 }
 
+                $item->origin = $this->imageDir.'/'.$item->image;
                 $item->image = $this->imageDir.'/'.$image;
             });
 

@@ -24,9 +24,9 @@
         </div>
     </div>
 
-    {% if product.images|length %}
+    {% if product.images|slice(1)|length %}
         <h2>{{ 'product_images'|trans }}</h2>
 
-        {% include 'product/images_list.html.twig' with {images: product.images, defaultImage: product.defaultImage} %}
+        {% include 'product/images_list.html.twig' with {images: product.images|slice(1)} %}
     {% endif %}
 {% endblock %}

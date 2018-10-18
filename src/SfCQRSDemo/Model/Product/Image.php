@@ -28,4 +28,20 @@ class Image
     {
         return new Image($imageId, $name);
     }
+
+    /**
+     * @return ImageId
+     */
+    public function getId(): ImageId
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }

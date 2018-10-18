@@ -11,12 +11,9 @@ class ImageId
      */
     private $imageId;
 
-    /**
-     * @param string $imageId
-     */
-    public function __construct(string $imageId)
+    public static function fromString(string $imageId)
     {
-        $this->imageId = $imageId;
+        return new ImageId($imageId);
     }
 
     public function __toString(): string
@@ -32,5 +29,13 @@ class ImageId
     public static function generate(): ImageId
     {
         return new ImageId(UuidGenerator::generate());
+    }
+
+    /**
+     * @param string $imageId
+     */
+    private function __construct(string $imageId)
+    {
+        $this->imageId = $imageId;
     }
 }

@@ -17,6 +17,6 @@
     {% if product.images|length %}
         <h2>{{ 'uploaded_images'|trans }}</h2>
 
-        {% include 'product/images_list.html.twig' with {images: product.images, defaultImage: null} %}
+        {% include 'product/images_list.html.twig' with {productId: product.id, images: product.images, defaultImage: null, control: true} %}
     {% endif %}
 {% endblock %}

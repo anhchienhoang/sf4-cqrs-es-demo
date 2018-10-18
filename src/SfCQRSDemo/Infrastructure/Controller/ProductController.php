@@ -5,6 +5,7 @@ namespace SfCQRSDemo\Infrastructure\Controller;
 use Psr\Log\LoggerInterface;
 use SfCQRSDemo\Application\Command\AddImageCommand;
 use SfCQRSDemo\Application\Command\AddProductCommand;
+use SfCQRSDemo\Application\Command\DeleteImageCommand;
 use SfCQRSDemo\Application\Command\ResizeImageCommand;
 use SfCQRSDemo\Application\Command\UpdateProductCommand;
 use SfCQRSDemo\Application\Query\ProductQuery;
@@ -129,6 +130,14 @@ class ProductController extends Controller
 
     /**
      * @Route("/add/image/{id}", name="product_add_image", requirements={"id" = ".+"})
+     *
+     * @param string              $id
+     * @param Request             $request
+     * @param MessageBusInterface $bus
+     * @param TranslatorInterface $translator
+     * @param LoggerInterface     $logger
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addImage(string $id, Request $request, MessageBusInterface $bus, TranslatorInterface $translator, LoggerInterface $logger)
     {
@@ -182,5 +191,22 @@ class ProductController extends Controller
                 'product' => $product,
             ]
         );
+    }
+
+    /**
+     * @Route("/{id}/delete/image/{imageId}", name="product_delete_image", requirements={"id" = ".+", "imageId" = ".+"})
+     */
+    public function deleteImage(string $id, string $imageId, MessageBusInterface $bus)
+    {
+        $productQuery = new ProductQuery($id);
+
+        /** @var ProductView $product */
+        $product = $bus->dispatch($productQuery);
+
+        $deleteImageCommand = new DeleteImageCommand($imageId, $product->getId());
+
+        $bus->dispatch($deleteImageCommand);
+
+        return $this->redirectToRoute('product_add_image', ['id' => $product->getId()]);
     }
 }

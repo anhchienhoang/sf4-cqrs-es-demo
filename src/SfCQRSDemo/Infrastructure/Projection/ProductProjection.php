@@ -3,7 +3,9 @@
 namespace SfCQRSDemo\Infrastructure\Projection;
 
 use Doctrine\DBAL\Connection;
+use SfCQRSDemo\Model\Product\ImageId;
 use SfCQRSDemo\Model\Product\ImageWasAdded;
+use SfCQRSDemo\Model\Product\ImageWasRemoved;
 use SfCQRSDemo\Model\Product\ProductDescriptionWasChanged;
 use SfCQRSDemo\Model\Product\ProductNameWasChanged;
 use SfCQRSDemo\Model\Product\ProductPriceWasChanged;
@@ -101,6 +103,42 @@ class ProductProjection extends AbstractProjection implements ProductProjectionP
             'UPDATE `products` SET `images`=? WHERE id=?',
             [
                 json_encode($images),
+                (string) $event->getAggregateId(),
+            ]
+        );
+
+        $this->connection->commit();
+    }
+
+    public function projectWhenImageWasRemoved(ImageWasRemoved $event)
+    {
+        $this->connection->beginTransaction();
+
+        $stmt = $this->connection->prepare(
+            'DELETE FROM `product_images` WHERE id=:id'
+        );
+
+        $stmt->execute([
+            ':id' => (string) $event->getImage()->getId(),
+        ]);
+
+        $images = $this->connection->fetchColumn(
+            'SELECT `images` FROM `products` WHERE id=?',
+            [(string) $event->getAggregateId()]
+        );
+
+        $images = json_decode($images);
+
+        foreach ($images as $idx => $image) {
+            if ($event->getImage()->getId()->equals(ImageId::fromString($image->id))) {
+                unset($images[$idx]);
+            }
+        }
+
+        $this->connection->executeQuery(
+            'UPDATE `products` SET `images`=? WHERE id=?',
+            [
+                json_encode(array_values($images)),
                 (string) $event->getAggregateId(),
             ]
         );
