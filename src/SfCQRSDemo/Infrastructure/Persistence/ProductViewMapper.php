@@ -3,6 +3,7 @@
 namespace SfCQRSDemo\Infrastructure\Persistence;
 
 use SfCQRSDemo\Model\Product\ProductView;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ProductViewMapper
 {
@@ -22,15 +23,22 @@ class ProductViewMapper
     private $noImage;
 
     /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    /**
      * @param string $publicDir
      * @param string $imageDir
      * @param string $noImage
+     * @param Filesystem $filesystem
      */
-    public function __construct(string $publicDir, string $imageDir, string $noImage)
+    public function __construct(string $publicDir, string $imageDir, string $noImage, Filesystem $filesystem)
     {
         $this->publicDir = $publicDir;
         $this->imageDir = $imageDir;
         $this->noImage = $noImage;
+        $this->filesystem = $filesystem;
     }
 
     public function map(array $data): ProductView
@@ -43,7 +51,7 @@ class ProductViewMapper
             array_walk($images, function ($item) {
                 $thumbnail = 'thumb_'.$item->image;
 
-                if (file_exists($this->publicDir.'/'.$this->imageDir.'/'.$thumbnail)) {
+                if ($this->filesystem->exists($this->publicDir.'/'.$this->imageDir.'/'.$thumbnail)) {
                     $image = $thumbnail;
                 } else {
                     $image = $item->image;

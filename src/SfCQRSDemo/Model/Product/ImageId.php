@@ -2,7 +2,7 @@
 
 namespace SfCQRSDemo\Model\Product;
 
-use Ramsey\Uuid\Uuid;
+use SfCQRSDemo\Shared\UuidGenerator;
 
 class ImageId
 {
@@ -31,6 +31,6 @@ class ImageId
 
     public static function generate(): ImageId
     {
-        return new ImageId(Uuid::uuid4()->toString());
+        return new ImageId(UuidGenerator::generate());
     }
 }

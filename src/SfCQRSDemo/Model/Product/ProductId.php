@@ -2,9 +2,8 @@
 
 namespace SfCQRSDemo\Model\Product;
 
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use SfCQRSDemo\Shared\AggregateId;
+use SfCQRSDemo\Shared\UuidGenerator;
 
 class ProductId implements AggregateId
 {
@@ -12,7 +11,7 @@ class ProductId implements AggregateId
 
     public static function generate(): ProductId
     {
-        return new ProductId(Uuid::uuid4()->toString());
+        return new ProductId(UuidGenerator::generate());
     }
 
     public static function fromString(string $productId): ProductId
