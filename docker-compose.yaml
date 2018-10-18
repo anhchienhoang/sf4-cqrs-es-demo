@@ -23,7 +23,7 @@ services:
       - DATABASE_URL=mysql://root:root@db:3306/web
       - MESSENGER_TRANSPORT_DSN=amqp://guest:guest@rabbitmq:5672/%2f/messages
       - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_API_PORT=5672
+      - RABBITMQ_PORT=5672
   db:
     container_name: db
     image: mysql:5.7
@@ -54,6 +54,8 @@ services:
       - rabbitmq
     working_dir: /var/www
     environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
       - MESSENGER_TRANSPORT_DSN=amqp://guest:guest@rabbitmq:5672/%2f/messages
     command: php bin/console messenger:consume-messages
 
