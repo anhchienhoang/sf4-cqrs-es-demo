@@ -16,6 +16,10 @@ In advanced, it could have multiple streams and asynchronous projections.
 
 Feel free to create your PR if you want to change something to make it better.
 
+Watch the running app on Youtube:
+
+[![Demo App](https://img.youtube.com/vi/CWJ5UoxXXkE/0.jpg)](https://www.youtube.com/watch?v=CWJ5UoxXXkE)
+
 ## Requirements
 * PHP >= 7.1
 * MySQL >= 5.7
