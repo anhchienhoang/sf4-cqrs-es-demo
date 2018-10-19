@@ -68,6 +68,14 @@ Build Front-end while developing:
 ```bash
 $ docker run -it --volume $(pwd):/app -w=/app node:9.0 /bin/bash -c "npm run watch"
 ```
+Or
+```bash
+$ ./npm.sh run watch
+```
+In order to build FE assests, please run
+```bash
+$ ./npm.sh run build
+```
 
 Next you have to update your hosts file (commonly located at /etc/hosts) with the following
 ```bash
