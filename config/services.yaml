@@ -4,12 +4,15 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    env(PRODUCTS_PER_PAGE): 9
+
     locale: en
     infra_dir: '%kernel.project_dir%/src/SfCQRSDemo/Infrastructure'
     public_dir: '%infra_dir%/UI/Public'
     images_dir: '/product_images'
     no_image: '/images/no_image.png'
     image_crop_size: 300
+    products_per_page: '%env(resolve:PRODUCTS_PER_PAGE)%'
 
 services:
     # default configuration for services in *this* file

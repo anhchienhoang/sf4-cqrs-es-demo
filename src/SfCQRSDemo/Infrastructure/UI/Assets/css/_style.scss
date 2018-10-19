@@ -28,6 +28,11 @@ a {
 .product-item {
   border: 1px solid $line-color;
   padding: 10px;
+
+  h2 {
+    font-size: 18px;
+    margin-top: 10px;
+  }
 }
 
 .product-detail {
@@ -35,5 +40,10 @@ a {
     max-width: 300px;
     margin-right: 10px;
   }
+}
+
+.product-image {
+  width: 300px;
+  height: 300px;
 }
 

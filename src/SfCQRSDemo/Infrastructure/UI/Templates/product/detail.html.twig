@@ -11,7 +11,7 @@
         <div class="col-md-8">
             <h1>{{ product.name }}</h1>
             <h2>{{ product.price }}&euro;</h2>
-            <p>{{ product.description }}</p>
+            <p>{{ product.description|nl2br }}</p>
             <div>
                 <a href="{{ path('product_update', {id: product.id}) }}" class="btn btn-primary">
                     <i class="fa fa-edit"></i> {{ 'edit'|trans }}

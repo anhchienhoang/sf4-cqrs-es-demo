@@ -3,12 +3,15 @@
         {% for item in row %}
             <div class="col-md-4 text-center mb-3">
                 <div class="rounded img-thumbnail">
-                    <a href="{{ item.origin }}" target="_blank"><img src="{{ item.image }}" alt=""></a>
+                    <a href="{{ item.origin }}" target="_blank">
+                        <img src="{{ item.image }}" class="product-image mb-2" alt="">
+                    </a>
 
                     {% if control is defined and control is same as(true) %}
-                        <br>
-                        <a href="{{ path('product_delete_image', {id: productId, imageId: item.id}) }}"
-                           class="btn btn-danger">{{ 'delete'|trans }}</a>
+                        <div class="mb-3">
+                            <a href="{{ path('product_delete_image', {id: productId, imageId: item.id}) }}"
+                               class="btn btn-danger">{{ 'delete'|trans }}</a>
+                        </div>
                     {% endif %}
                 </div>
             </div>

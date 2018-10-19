@@ -9,7 +9,7 @@
                     <a href="{{ path('product_detail', {id: item.id}) }}">
                         <div class="product-item">
                             <div><img class="col-md-8" src="{{ item.defaultImage }}"></div>
-                            <h2>{{ item.name }}</h2>
+                            <h2>{{ item.name[:30] ~ (item.name|length > 30 ? '...') }}</h2>
                             <p>{{ item.price }}&euro;</p>
                         </div>
                     </a>

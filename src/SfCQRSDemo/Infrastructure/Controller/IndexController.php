@@ -10,8 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends Controller
 {
-    const PRODUCT_PER_PAGE = 12;
-
     /**
      * @Route("/{page}", name="index", requirements={"page" = "\d+"}, defaults={"page" = 1})
      *
@@ -22,11 +20,13 @@ class IndexController extends Controller
      */
     public function index(int $page, MessageBusInterface $bus)
     {
-        $query = new PagingProductsQuery($page, static::PRODUCT_PER_PAGE);
+        $productsPerPage = $this->getParameter('products_per_page');
+
+        $query = new PagingProductsQuery($page, $productsPerPage);
 
         $productsCount = $bus->dispatch(new ProductsCountQuery());
 
-        $maxPages = floor($productsCount / static::PRODUCT_PER_PAGE);
+        $maxPages = ceil($productsCount / $productsPerPage);
 
         $products = $bus->dispatch($query);
 
