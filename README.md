@@ -22,6 +22,11 @@ Feel free to create your PR if you want to change something to make it better.
 
 ## Installation
 
+Clone the project
+```bash
+$ git clone https://github.com/anhchienhoang/sf4-cqrs-es-demo.git && cd sf4-cqrs-es-demo
+```
+
 ### For non-docker developers
 
 Setup PHP dependencies
