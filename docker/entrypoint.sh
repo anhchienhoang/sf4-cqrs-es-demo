@@ -1,34 +1,36 @@
-#!/bin/bash -x
+#!/bin/bash
 
 set -xe
 
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bk
 cp /etc/nginx/nginx_waiting.conf /etc/nginx/nginx.conf
-/usr/sbin/nginx -g 'daemon on;' &
+
+service nginx restart
+
+sleep 1
 
 # Setup dependencies for the first time
-if [ ! -d "/var/www/vendor" ]; then
+if [[ ! -d "/var/www/vendor" ]]; then
+    mkdir /var/www/vendor
     # Run composer
     cd /var/www && composer install
-
 fi
 
-if [ ! -d "/var/www/node_modules" ]; then
+if [[ ! -d "/var/www/node_modules" ]]; then
     # Build FE
     cd /var/www && npm install && npm run build
 fi
 
 # Run migrations
-/var/www/bin/console doctrine:migrations:migrate -n
-
-while ! nc -z ${RABBITMQ_HOST} ${RABBITMQ_PORT}; do
-    echo "Waiting for Rabbitmq..."
-    sleep 3;
-done
+php /var/www/bin/console doctrine:migrations:migrate -n
 
 cp /etc/nginx/nginx.conf.bk /etc/nginx/nginx.conf
 chown -R www-data:www-data /var/www
 
-killall -9 nginx
+kill $(ps aux | grep '[n]ginx' | awk '{print $2}')
 
-exec $*
+service nginx stop
+
+sleep 1
+
+supervisord -c /etc/supervisor/supervisord.conf --nodaemon

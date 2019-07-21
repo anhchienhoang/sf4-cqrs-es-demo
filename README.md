@@ -21,7 +21,7 @@ Watch the running app on Youtube:
 [![Demo App](https://img.youtube.com/vi/CWJ5UoxXXkE/0.jpg)](https://www.youtube.com/watch?v=CWJ5UoxXXkE)
 
 ## Requirements
-* PHP >= 7.1
+* PHP >= 7.3
 * MySQL >= 5.7
 
 ## Installation
@@ -67,6 +67,8 @@ $ docker-compose up -d
 
 For the first time, it will take a bit of time to get the page is ready (running composer, npm...) 
 and if you access to the homepage, it will display the waiting text.
+
+If there's a service that's not started yet, please run `$ docker-compose up -d` again
 
 Build Front-end while developing:
 ```bash

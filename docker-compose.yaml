@@ -1,17 +1,20 @@
-version: '2.0'
+version: '3'
 
 services:
   web:
     container_name: web
-    image: "anhchienhoang/sf4-cqrs-es-demo:1.0.2"
+    image: "anhchienhoang/sf4-cqrs-es-demo:2.0.0"
     build:
       context: ./
       dockerfile: Dockerfile
     volumes:
-      - ./:/var/www:cached
+      - ./:/var/www
     ports:
       - "80:80"
     links:
+      - db
+      - rabbitmq
+    depends_on:
       - db
       - rabbitmq
     working_dir: /var/www
@@ -43,21 +46,23 @@ services:
 
   messages_consumer:
     container_name: messages_consumer
-    image: "anhchienhoang/sf4-cqrs-es-demo:1.0.2"
+    image: "anhchienhoang/sf4-cqrs-es-demo:2.0.0"
     build:
       context: ./
       dockerfile: Dockerfile
     volumes:
-      - ./:/var/www:cached
+      - ./:/var/www
     links:
       - db
       - rabbitmq
+    depends_on:
+      - web
     working_dir: /var/www
     environment:
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_PORT=5672
       - MESSENGER_TRANSPORT_DSN=amqp://guest:guest@rabbitmq:5672/%2f/messages
-    command: php bin/console messenger:consume-messages
+    command: php bin/console messenger:consume
 
   rabbitmq:
     container_name: rabbitmq
@@ -70,5 +75,6 @@ services:
       RABBITMQ_DEFAULT_VHOST: "/"
     ports:
       - "5672:5672"
+      - "15672:15672"
     stdin_open: true
     tty: true
